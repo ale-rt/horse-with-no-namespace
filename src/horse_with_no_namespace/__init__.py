@@ -42,6 +42,8 @@ def apply():
         # to update __path__ using pkgutil.extend_path instead
         def declare_namespace(packageName):
             parent_locals = sys._getframe(1).f_locals
+            if not "__path__" in parent_locals:
+                parent_locals["__path__"] = []
             parent_locals["__path__"] = pkgutil.extend_path(
                 parent_locals["__path__"], packageName
             )
