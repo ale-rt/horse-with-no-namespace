@@ -17,14 +17,11 @@ import pathlib
 import sys
 import warnings
 
-logged = False
 BOLD = "\033[1m"
 RESET = "\033[0m"
 
 
 def apply():
-    global logged
-
     # Collect namespace packages from **/namespace_packages.txt
     target = pathlib.Path(__file__).parent.parent
     namespaces_packages = set()
@@ -34,17 +31,12 @@ def apply():
             if namespace_package:
                 namespaces_packages.add(namespace_package)
 
-    # The Python site module can call us more than once.
-    # We need to actually do this the last time,
-    # But we only want to show the notice once.
-    if not logged:
-        warnings.warn(
-            f"🐎 This Python ({BOLD}{sys.executable}{RESET}) uses "
-            "horse-with-no-namespace to make the following pkg_resources namespace "
-            "packages compatible with PEP 420 namespace packages:\n  "
-            f"{', '.join(sorted(namespaces_packages))}\n"
-        )
-        logged = True
+    warnings.warn(
+        f"🐎 This Python ({BOLD}{sys.executable}{RESET}) uses "
+        "horse-with-no-namespace to make the following pkg_resources namespace "
+        "packages compatible with PEP 420 namespace packages:\n  "
+        f"{', '.join(sorted(namespaces_packages))}\n"
+    )
 
     # Remove existing namespace package modules that were already mangled
     # by other .pth files, possibly with an incomplete __path__
