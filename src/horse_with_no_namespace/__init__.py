@@ -15,6 +15,7 @@
 import importlib
 import pathlib
 import sys
+import warnings
 
 logged = False
 BOLD = "\033[1m"
@@ -37,12 +38,11 @@ def apply():
     # We need to actually do this the last time,
     # But we only want to show the notice once.
     if not logged:
-        print(
+        warnings.warn(
             f"🐎 This Python ({BOLD}{sys.executable}{RESET}) uses "
             "horse-with-no-namespace to make the following pkg_resources namespace "
             "packages compatible with PEP 420 namespace packages:\n  "
-            f"{', '.join(sorted(namespaces_packages))}\n",
-            file=sys.stderr,
+            f"{', '.join(sorted(namespaces_packages))}\n"
         )
         logged = True
 
